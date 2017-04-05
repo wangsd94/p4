@@ -27,8 +27,8 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	private IntervalNode<T> inserthelper(IntervalNode<T> n, IntervalADT<T> key) 
 			throws IllegalArgumentException {
 		if(key == null) throw new IllegalArgumentException();
-		if(n.getLeftNode() == null) {
-				return new IntervalNode<T>(key);
+		if(n == null) {
+			return new IntervalNode<T>(key);
 		}
 		if(n.getInterval().compareTo(key) == 0){
 			throw new IllegalArgumentException();
@@ -112,11 +112,14 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	@Override
 	public int getHeight() {
 		// TODO Auto-generated method stub
-		return getHight(root);
+		return getHeightHelper(root);
 	}
-	private int getHight(IntervalNode<T> t){
+	private int getHeightHelper(IntervalNode<T> t){
 		if(t == null) return 0;
-		if(t.getLeftNode())
+		int leftHeight = getHeightHelper(t.getLeftNode());
+		int rightHeight = getHeightHelper(t.getRightNode());
+		if(leftHeight > rightHeight) return 1 + leftHeight;
+		else return 1+rightHeight;
 	}
 
 	@Override
