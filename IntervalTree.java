@@ -64,17 +64,17 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	public IntervalNode<T> deleteHelper(IntervalNode<T> node,
 					IntervalADT<T> interval)
 					throws IntervalNotFoundException, IllegalArgumentException {
-		// TODO Auto-generated method stub
+
 		if(node == null) {
 			//PAY ATTENTION! I'm not sure what to put in () of this exception
 			throw new IntervalNotFoundException(node.getInterval().getLabel());
 		}
 		if(node.getInterval().compareTo(interval) == 0){
 			if(node.getRightNode() != null){
-				IntervalNode<T> smallVal = node.getSuccessor();
-				node.setInterval(smallVal.getInterval());
-				deleteHelper(smallVal,smallVal.getInterval());//not sure
-				// TODO update maxEnd
+				IntervalADT<T> smallVal = node.getSuccessor().getInterval();
+				node.setInterval(smallVal);
+				deleteHelper(node.getRightNode(),smallVal);
+				node.setMaxEnd(recalculateMaxEnd(node));
 				return node;
 			}
 			else{
@@ -83,16 +83,12 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 		}
 		if(node.getInterval().compareTo(interval) < 0){
 			node.setRightNode(deleteHelper(node.getRightNode(),interval));
-			if(node.getMaxEnd().compareTo(node.getRightNode().getMaxEnd()) < 0){
-				//TODO update maxEnd
-			}
+			node.setMaxEnd(recalculateMaxEnd(node));
 			return node;
 		}
 		else{
 			node.setLeftNode(deleteHelper(node.getLeftNode(), interval));
-			if(node.getMaxEnd().compareTo(node.getLeftNode().getMaxEnd()) < 0){
-				//TODO update maxEnd
-			}
+			node.setMaxEnd(recalculateMaxEnd(node));
 			return node;
 		}
 	}
@@ -132,6 +128,34 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	public void printStats() {
 		// TODO Auto-generated method stub
 
+	}
+	private T recalculateMaxEnd(IntervalNode<T> nodeToRecalculate){
+		if(nodeToRecalculate.getLeftNode() == null&&
+				nodeToRecalculate.getRightNode() == null){
+			return nodeToRecalculate.getMaxEnd();
+		}
+		if(nodeToRecalculate.getLeftNode() == null){
+			if(nodeToRecalculate.getMaxEnd().compareTo(
+					nodeToRecalculate.getRightNode().getMaxEnd())<0){
+				return nodeToRecalculate.getRightNode().getMaxEnd();
+			}
+			else return nodeToRecalculate.getMaxEnd();
+		}
+		if(nodeToRecalculate.getRightNode() == null){
+			if(nodeToRecalculate.getMaxEnd().compareTo(
+					nodeToRecalculate.getLeftNode().getMaxEnd())<0){
+				return nodeToRecalculate.getLeftNode().getMaxEnd();
+			}
+			else return nodeToRecalculate.getMaxEnd();
+		}
+		T maxVal = nodeToRecalculate.getLeftNode().getMaxEnd();
+		if(maxVal.compareTo(nodeToRecalculate.getRightNode().getMaxEnd()) < 0){
+			maxVal = nodeToRecalculate.getRightNode().getMaxEnd();
+		}
+		if(maxVal.compareTo(nodeToRecalculate.getMaxEnd()) < 0){
+			maxVal = nodeToRecalculate.getMaxEnd();
+		}
+		return maxVal;
 	}
 
 }
