@@ -128,15 +128,28 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	}
 
 	@Override
-	public boolean contains(IntervalADT<T> interval) {
-		// TODO Auto-generated method stub
+	public boolean contains(IntervalADT<T> interval) 
+			throws IllegalArgumentException{
+		if(interval == null) throw new IllegalArgumentException();
+		return containsHelper(root,interval);
 	}
 
+	private boolean containsHelper(IntervalNode<T> node, 
+			IntervalADT<T> interval){
+		if(node == null) return null;
+		if(node.getInterval().compareTo(interval) == 0) return true;
+		if(node.getInterval().compareTo(interval) > 0)
+			return containsHelper(node.getLeftNode(),interval);
+		else return containsHelper(node.getRightNode(),interval);
+	}
 	@Override
 	public void printStats() {
-		// TODO Auto-generated method stub
-
+		System.out.println("-----------------------------------------");
+		System.out.println("Height: "+getHeight());
+		System.out.println("Size: "+getSize());
+		System.out.println("-----------------------------------------");
 	}
+	
 	private T recalculateMaxEnd(IntervalNode<T> nodeToRecalculate){
 		if(nodeToRecalculate.getLeftNode() == null&&
 				nodeToRecalculate.getRightNode() == null){
