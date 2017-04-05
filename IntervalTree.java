@@ -70,7 +70,6 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 			if(node.getRightNode() != null){
 				IntervalADT<T> smallVal = node.getSuccessor().getInterval();
 				node.setInterval(smallVal);
-				node.setMaxEnd(smallVal.getEnd());
 				deleteHelper(node.getRightNode(),smallVal);
 				node.setMaxEnd(recalculateMaxEnd(node));
 				return node;
@@ -106,10 +105,12 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 		if(node.getInterval().overlaps(interval)){
 			result.add(node.getInterval());
 		}
-		if(node.getLeftNode().getMaxEnd().compareTo(interval.getStart()) > 0){
+		if(node.getLeftNode() != null &&
+				node.getLeftNode().getMaxEnd().compareTo(interval.getStart()) > 0){
 			findOverlappingHelper(node.getLeftNode(), interval, result);
 		}
-		if(node.getRightNode().getMaxEnd().compareTo(interval.getStart()) > 0){
+		if(node.getRightNode() != null &&
+				node.getRightNode().getMaxEnd().compareTo(interval.getStart()) > 0){
 			findOverlappingHelper(node.getRightNode(), interval, result);
 		}
 	}
@@ -128,10 +129,12 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 		if(node.getInterval().contains(point)){
 			result.add(node.getInterval());
 		}
-		if(node.getLeftNode().getMaxEnd().compareTo(point) > 0){
+		if(node.getLeftNode() != null &&
+				node.getLeftNode().getMaxEnd().compareTo(point) > 0){
 			searchPointHelper(node.getLeftNode(), point, result);
 		}
-		if(node.getRightNode().getMaxEnd().compareTo(point) > 0){
+		if(node.getRightNode() != null &&
+				node.getRightNode().getMaxEnd().compareTo(point) > 0){
 			searchPointHelper(node.getRightNode(), point, result);
 		}
 	}
@@ -181,6 +184,8 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	}
 	
 	private T recalculateMaxEnd(IntervalNode<T> nodeToRecalculate){
+		T nodeEnd = nodeToRecalculate.getInterval().getEnd();
+		nodeToRecalculate.setMaxEnd(nodeEnd);
 		if(nodeToRecalculate.getLeftNode() == null&&
 				nodeToRecalculate.getRightNode() == null){
 			return nodeToRecalculate.getMaxEnd();

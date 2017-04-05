@@ -55,7 +55,7 @@ public class Interval<T extends Comparable<T>> implements IntervalADT<T> {
     	}
     }
     public String toString(){
-    	return label+" ["+ (String)start+", "+ (String)end+ "]";
+    	return label+" ["+ start.toString()+", "+ end.toString()+ "]";
     }
 
 }
