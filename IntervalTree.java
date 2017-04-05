@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T> {
@@ -13,14 +14,12 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	}
 	@Override
 	public IntervalNode<T> getRoot() {
-		// TODO Auto-generated method stub
 		return root;
 	}
 
 	@Override
 	public void insert(IntervalADT<T> interval)
 					throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		root = inserthelper(root, interval);
 
 	}
@@ -56,7 +55,6 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	@Override
 	public void delete(IntervalADT<T> interval)
 					throws IntervalNotFoundException, IllegalArgumentException {
-		// TODO Auto-generated method stub
 		root = deleteHelper(root,interval);
 	}
 
@@ -66,13 +64,13 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 					throws IntervalNotFoundException, IllegalArgumentException {
 
 		if(node == null) {
-			//PAY ATTENTION! I'm not sure what to put in () of this exception
-			throw new IntervalNotFoundException(node.getInterval().getLabel());
+			throw new IntervalNotFoundException(interval.toString());
 		}
 		if(node.getInterval().compareTo(interval) == 0){
 			if(node.getRightNode() != null){
 				IntervalADT<T> smallVal = node.getSuccessor().getInterval();
 				node.setInterval(smallVal);
+				node.setMaxEnd(smallVal.getEnd());
 				deleteHelper(node.getRightNode(),smallVal);
 				node.setMaxEnd(recalculateMaxEnd(node));
 				return node;
@@ -96,14 +94,47 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	@Override
 	public List<IntervalADT<T>> findOverlapping(
 					IntervalADT<T> interval) {
-		// TODO Auto-generated method stub
+		if(interval == null) throw new IllegalArgumentException();
+		List<IntervalADT<T>> result = new ArrayList<IntervalADT<T>>();
+		findOverlappingHelper(root, interval, result);
+		return result;
+	}
+	
+	private void findOverlappingHelper(IntervalNode<T> node, 
+			IntervalADT<T> interval, List<IntervalADT<T>> result){
+		if(node == null) return;
+		if(node.getInterval().overlaps(interval)){
+			result.add(node.getInterval());
+		}
+		if(node.getLeftNode().getMaxEnd().compareTo(interval.getStart()) > 0){
+			findOverlappingHelper(node.getLeftNode(), interval, result);
+		}
+		if(node.getRightNode().getMaxEnd().compareTo(interval.getStart()) > 0){
+			findOverlappingHelper(node.getRightNode(), interval, result);
+		}
 	}
 
 	@Override
 	public List<IntervalADT<T>> searchPoint(T point) {
-		// TODO Auto-generated method stub
+		if(point == null) throw new IllegalArgumentException();
+		List<IntervalADT<T>> result = new ArrayList<IntervalADT<T>>();
+		searchPointHelper(root, point, result);
+		return result;
 	}
 
+	private void searchPointHelper(IntervalNode<T> node, 
+			T point, List<IntervalADT<T>> result){
+		if(node == null) return;
+		if(node.getInterval().contains(point)){
+			result.add(node.getInterval());
+		}
+		if(node.getLeftNode().getMaxEnd().compareTo(point) > 0){
+			searchPointHelper(node.getLeftNode(), point, result);
+		}
+		if(node.getRightNode().getMaxEnd().compareTo(point) > 0){
+			searchPointHelper(node.getRightNode(), point, result);
+		}
+	}
 	@Override
 	public int getSize() {
 		return getSizeHelper(root);
@@ -128,15 +159,14 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	}
 
 	@Override
-	public boolean contains(IntervalADT<T> interval) 
-			throws IllegalArgumentException{
+	public boolean contains(IntervalADT<T> interval) {
 		if(interval == null) throw new IllegalArgumentException();
 		return containsHelper(root,interval);
 	}
 
 	private boolean containsHelper(IntervalNode<T> node, 
 			IntervalADT<T> interval){
-		if(node == null) return null;
+		if(node == null) return false;
 		if(node.getInterval().compareTo(interval) == 0) return true;
 		if(node.getInterval().compareTo(interval) > 0)
 			return containsHelper(node.getLeftNode(),interval);
