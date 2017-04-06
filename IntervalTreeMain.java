@@ -13,7 +13,7 @@ import java.util.Scanner;
  * <p>This is the main file which runs the program. It has two modes to run:</p> 
  * 
  * <h4>Interactive mode: <code>java IntervalTreeMain 1</code></h4>
- *  
+ *  THis is a test
  * <h4>Non-Interactive mode: <code>java IntervalTreeMain 2 data_01.txt</code></h4>
  */
 public class IntervalTreeMain {
