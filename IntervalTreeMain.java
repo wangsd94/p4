@@ -27,21 +27,41 @@ public class IntervalTreeMain {
 	 * text file with interval ranges.</p>
 	 */
 	public static void main(String[] args) {
-		if (args.length < 2) {
-			System.out.println("Input args must be of length 1. Please provide filename.");
+//		if (args.length < 2) {
+//			System.out.println("Input args must be of length 1. Please provide filename.");
+//			System.out.println("Usage: IntervalTreeMain <mode> <datafile>");
+//		}
+//
+//		int mode = Integer.parseInt(args[0]);
+//		String filename = args[1];
+//		IntervalTreeMain runner = new IntervalTreeMain();
+//
+//		if (mode == 1) {
+//			runner.interactiveMode();
+//		}
+//		else {
+//			runner.nonInteractiveMode(filename);
+//		}
+		
+		if (args.length < 1) {
 			System.out.println("Usage: IntervalTreeMain <mode> <datafile>");
 		}
 
 		int mode = Integer.parseInt(args[0]);
-		String filename = args[1];
 		IntervalTreeMain runner = new IntervalTreeMain();
 
 		if (mode == 1) {
 			runner.interactiveMode();
 		}
 		else {
+			if (args.length != 2) {
+				System.out.println("Please input filename for non-interactive mode.");
+				System.out.println("Usage: IntervalTreeMain <mode> <datafile>");		
+			}
+			String filename = args[1];
 			runner.nonInteractiveMode(filename);
 		}
+		
 	}
 
 	/**
