@@ -41,11 +41,11 @@ public class IntervalNode<T extends Comparable<T>> {
 	 *            the interval data member.
 	 */
 	public IntervalNode(IntervalADT<T> interval) {
-		// TODO
-		this.interval = interval;
-		this.maxEnd = interval.getEnd();
-		this.leftNode = null;
-		this.rightNode = null;
+
+		this.interval = interval; //assigns field variable interval to interval passed in
+		this.maxEnd = interval.getEnd(); //sets the end of the interval
+		this.leftNode = null; //initiate leftNode to null
+		this.rightNode = null; //initiate rightNode to null
 	}
 
 	/**
@@ -55,14 +55,14 @@ public class IntervalNode<T extends Comparable<T>> {
 	 * @return in-order successor node
 	 */
 	public IntervalNode<T> getSuccessor() {
-		IntervalNode<T> leftMost = rightNode;
+		IntervalNode<T> leftMost = rightNode; //Assigns the rightNode to the leftMost IntervalNode
 		if(leftMost == null){
-			return null;
-		}else{
-			while(leftMost.getLeftNode() != null){
+			return null; //return null if there is no rightNode
+		}else{ //Finds the next in-order successor 
+			while(leftMost.getLeftNode() != null){ //Searches through the BST while it has more nodes
 				leftMost = leftMost.getLeftNode();
 			}
-			return leftMost;
+			return leftMost; //returns the in-order successor
 		}
 	}
 
