@@ -62,7 +62,9 @@ public class IntervalTree<T extends Comparable<T>> implements IntervalTreeADT<T>
 	public IntervalNode<T> deleteHelper(IntervalNode<T> node,
 					IntervalADT<T> interval)
 					throws IntervalNotFoundException, IllegalArgumentException {
-
+		if(interval == null){
+			throw new IllegalArgumentException(); 
+		}
 		if(node == null) {
 			throw new IntervalNotFoundException(interval.toString());
 		}
