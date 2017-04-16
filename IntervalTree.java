@@ -1,3 +1,13 @@
+// Semester:         CS367 Spring 2016 
+// PROJECT:          p4 Schedule Planner
+// FILE:             IntervalTree.java
+//
+// TEAM:    Team 18a, Eighteen
+// Authors: 
+// Author1: Eric Schirtzinger, schirtzinger@wisc.edu, schirtzinger, Lec 001
+// Author2: Erika Stroik, emstroik@wisc.edu, emstroik, Lec 001
+// Author3: Shaodong Wang ,swang647@wisc.edu,swang647,Lec 001
+//
 import java.util.ArrayList;
 import java.util.List;
 /**

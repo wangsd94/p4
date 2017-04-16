@@ -1,3 +1,13 @@
+// Semester:         CS367 Spring 2016 
+// PROJECT:          p4 Schedule Planner
+// FILE:             IntervalNode.java
+//
+// TEAM:    Team 18a, Eighteen
+// Authors: 
+// Author1: Eric Schirtzinger, schirtzinger@wisc.edu, schirtzinger, Lec 001
+// Author2: Erika Stroik, emstroik@wisc.edu, emstroik, Lec 001
+// Author3: Shaodong Wang ,swang647@wisc.edu,swang647,Lec 001
+//
 /**
  * This class defines the IntervalNode for the IntervalTree. This node has three
  * components: 1) interval - the data that we want to store in this node 2)
